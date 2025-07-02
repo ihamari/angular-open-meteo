@@ -69,3 +69,13 @@ src/
 ## Licença
 
 Projeto educacional - Generation Brasil.
+
+## Segurança em Produção
+
+- **Use HTTPS:** Sempre hospede a aplicação em servidores com HTTPS habilitado.
+- **Headers de Segurança:** Configure o servidor para enviar os headers:
+  - `Content-Security-Policy`
+  - `X-Frame-Options`
+  - `Strict-Transport-Security`
+- **Validação de Entrada:** O nome da cidade é sanitizado antes de qualquer requisição.
+- **Atualize Dependências:** Execute `npm audit` regularmente.

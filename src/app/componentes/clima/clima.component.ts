@@ -2,11 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-clima',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule],  // Para usar routerLink no HTML se quiser
+  imports: [
+    CommonModule,
+    RouterModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule
+    ],  // Para usar routerLink no HTML se quiser
   templateUrl: './clima.component.html',
   styleUrl: './clima.component.css'
 })
@@ -14,6 +24,7 @@ export class ClimaComponent implements OnInit {
   cidade: string = '';
   clima: any = null;
   erro: string = '';
+  carregando: boolean = false; // Adicionado para controle do loading
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +48,7 @@ export class ClimaComponent implements OnInit {
   obterClima() {
     this.erro = '';
     this.clima = null;
+    this.carregando = true; // Inicia o loading
 
     this.http.get(`https://geocoding-api.open-meteo.com/v1/search?name=${this.cidade}&count=1`)
       .subscribe((geo: any) => {
@@ -52,10 +64,18 @@ export class ClimaComponent implements OnInit {
                 maxima: dados.daily.temperature_2m_max[0],
                 minima: dados.daily.temperature_2m_min[0]
               };
-            }, () => this.erro = 'Erro ao obter clima.');
+              this.carregando = false; // Finaliza o loading
+            }, () => {
+              this.erro = 'Erro ao obter clima.';
+              this.carregando = false; // Finaliza o loading em caso de erro
+            });
         } else {
           this.erro = 'Cidade não encontrada.';
+          this.carregando = false; // Finaliza o loading
         }
-      }, () => this.erro = 'Erro ao buscar coordenadas.');
+      }, () => {
+        this.erro = 'Erro ao buscar coordenadas.';
+        this.carregando = false; // Finaliza o loading
+      });
   }
 }

@@ -1,15 +1,42 @@
-<div class="container" *ngIf="clima; else erroTemplate">
-  <h2>{{ clima.nomeCidade }}</h2>
-  <p>🌡️ Temperatura: {{ clima.temperatura }}°C</p>
-  <p>🔼 Máxima: {{ clima.maxima }}°C | 🔽 Mínima: {{ clima.minima }}°C</p>
-  <p>💨 Vento: {{ clima.vento }} km/h</p>
-</div>
+<mat-card class="weather-card" *ngIf="clima; else erroTemplate">
+
+  <mat-card-title class="city">{{ clima.nomeCidade }}</mat-card-title>
+
+  <mat-card-content>
+    <div class="icon">
+      <mat-icon fontIcon="wb_sunny" class="weather-icon"></mat-icon>
+    </div>
+
+    <div class="temperature">
+      {{ clima.temperatura }}°C
+    </div>
+
+    <mat-card class="details-box">
+      <div class="details-row">
+        <span>Mínima: {{ clima.minima }}°C</span>
+        <span>Máxima: {{ clima.maxima }}°C</span>
+      </div>
+      <div class="details-row">
+        <span>Vento: {{ clima.vento }} km/h</span>
+        <span>Umidade: {{ clima.umidade }}%</span>
+      </div>
+    </mat-card>
+  </mat-card-content>
+
+</mat-card>
 
 <ng-template #erroTemplate>
-  <p *ngIf="erro">{{ erro }}</p>
+  <p class="error" *ngIf="erro">{{ erro }}</p>
 </ng-template>
 
-<button (click)="voltar()" class="btn btn-primary">Voltar para Buscar</button>
+<div *ngIf="carregando" class="loading-spinner">
+  <div class="spinner"></div>
+  <div>Carregando clima...</div>
+</div>
 
-
-
+<!-- Exibe o conteúdo somente se não estiver carregando -->
+<div *ngIf="!carregando">
+  <button mat-raised-button color="primary" (click)="voltar()">
+    Voltar para Buscar
+  </button>
+</div>

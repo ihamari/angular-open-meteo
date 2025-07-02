@@ -1,59 +1,71 @@
-# AngularOpenMeteo
+# Angular Open Meteo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+Aplicação Angular para consulta de clima em tempo real, utilizando a API Open-Meteo.
 
-## Development server
+## Funcionalidades
 
-To start a local development server, run:
+- Busca de cidades para previsão do tempo.
+- Exibe temperatura atual, máxima, mínima e velocidade do vento.
+- Animação de loading durante a busca.
+- Tratamento de erros para cidade não encontrada ou falha na API.
+- Interface responsiva e moderna com Angular Material.
 
-```bash
-ng serve
+## Tecnologias Utilizadas
+
+- [Angular](https://angular.io/)
+- [Angular Material](https://material.angular.io/)
+- [Open-Meteo API](https://open-meteo.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [RxJS](https://rxjs.dev/)
+
+## Estrutura do Projeto
+
+```
+src/
+  app/
+    componentes/
+      busca/         # Componente de busca de cidades
+      clima/         # Componente de exibição do clima
+    app.component.ts # Componente principal
+    ...
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Como Executar
 
-## Code scaffolding
+1. **Instale as dependências:**
+   ```
+   npm install
+   ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2. **Rode a aplicação:**
+   ```
+   ng serve
+   ```
+   Acesse em [http://localhost:4200](http://localhost:4200)
 
-```bash
-ng generate component component-name
-```
+3. **Rodar os testes:**
+   ```
+   ng test
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Como Usar
 
-```bash
-ng generate --help
-```
+- Na tela inicial, digite o nome da cidade e clique em "Buscar".
+- Aguarde o carregamento. Os dados do clima serão exibidos.
+- Caso a cidade não seja encontrada, uma mensagem de erro será mostrada.
+- Use o botão "Voltar" para retornar à busca.
 
-## Building
+## Testes
 
-To build the project run:
+- Testes unitários escritos com Jasmine e TestBed.
+- Para rodar: `ng test`
+- Os testes cobrem criação de componentes, navegação e tratamento de erros.
 
-```bash
-ng build
-```
+## Observações
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- A aplicação utiliza a API gratuita do Open-Meteo, sujeita a limitações de uso.
+- O design utiliza componentes do Angular Material para melhor experiência do usuário.
 
-## Running unit tests
+## Licença
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Projeto educacional - Generation Brasil.

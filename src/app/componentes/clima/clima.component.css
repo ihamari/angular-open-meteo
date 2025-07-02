@@ -1,4 +1,89 @@
-.container {
+:host {
+  display: block;
+  background-color: #dbeafe; /* fundo azul clarinho */
+  padding: 40px 0;
+  min-height: 100vh;
+}
+
+.weather-card {
+  background-color: transparent;
+  box-shadow: none;
+  max-width: 320px;
+  margin: 0 auto;
   text-align: center;
-  padding: 20px;
+}
+
+.city {
+  font-size: 1.8rem;
+  color: #111827;
+  font-weight: bold;
+}
+
+.icon {
+  margin: 10px 0;
+}
+
+.weather-icon {
+  font-size: 64px;
+  color: #facc15; /* amarelo sol */
+}
+
+.temperature {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #111827;
+  margin: 10px 0 20px 0;
+}
+
+.details-box {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  display: inline-block;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 1rem;
+  color: #374151;
+  margin: 4px 0;
+}
+
+.error {
+  display: inline-block; /* faz o p ajustar à largura do texto */
+  color: red;
+  font-weight: bold;
+  width: auto; /* reforça ajuste ao conteúdo */
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+button {
+  margin: 20px auto 0;
+  display: block;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.spinner {
+  border: 6px solid #e5e7eb;
+  border-top: 6px solid #2563eb;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
 }

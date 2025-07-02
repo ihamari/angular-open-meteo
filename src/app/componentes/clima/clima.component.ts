@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { ClimaCacheService } from './clima-cache.service';
 
 @Component({
   selector: 'app-clima',
@@ -29,7 +30,8 @@ export class ClimaComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router  // Agora o Router está no construtor
+    private router: Router,
+    private cache: ClimaCacheService // Injete o serviço de cache
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,15 @@ export class ClimaComponent implements OnInit {
   obterClima() {
     this.erro = '';
     this.clima = null;
-    this.carregando = true; // Inicia o loading
+    this.carregando = true;
+
+    // Verifica se já existe no cache
+    const cacheClima = this.cache.get(this.cidade);
+    if (cacheClima) {
+      this.clima = cacheClima;
+      this.carregando = false;
+      return;
+    }
 
     this.http.get(`https://geocoding-api.open-meteo.com/v1/search?name=${this.cidade}&count=1`)
       .subscribe((geo: any) => {
@@ -64,18 +74,19 @@ export class ClimaComponent implements OnInit {
                 maxima: dados.daily.temperature_2m_max[0],
                 minima: dados.daily.temperature_2m_min[0]
               };
-              this.carregando = false; // Finaliza o loading
+              this.cache.set(this.cidade, this.clima); // Salva no cache
+              this.carregando = false;
             }, () => {
               this.erro = 'Erro ao obter clima.';
-              this.carregando = false; // Finaliza o loading em caso de erro
+              this.carregando = false;
             });
         } else {
           this.erro = 'Cidade não encontrada.';
-          this.carregando = false; // Finaliza o loading
+          this.carregando = false;
         }
       }, () => {
         this.erro = 'Erro ao buscar coordenadas.';
-        this.carregando = false; // Finaliza o loading
+        this.carregando = false;
       });
   }
 }

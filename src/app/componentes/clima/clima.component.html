@@ -1,0 +1,15 @@
+<div class="container" *ngIf="clima; else erroTemplate">
+  <h2>{{ clima.nomeCidade }}</h2>
+  <p>🌡️ Temperatura: {{ clima.temperatura }}°C</p>
+  <p>🔼 Máxima: {{ clima.maxima }}°C | 🔽 Mínima: {{ clima.minima }}°C</p>
+  <p>💨 Vento: {{ clima.vento }} km/h</p>
+</div>
+
+<ng-template #erroTemplate>
+  <p *ngIf="erro">{{ erro }}</p>
+</ng-template>
+
+<button (click)="voltar()" class="btn btn-primary">Voltar para Buscar</button>
+
+
+

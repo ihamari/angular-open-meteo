@@ -7,4 +7,6 @@ import { RouterOutlet } from '@angular/router';
   imports: [RouterOutlet], // Isso resolve o problema
   template: `<router-outlet></router-outlet>`
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'angular-open-meteo';
+}

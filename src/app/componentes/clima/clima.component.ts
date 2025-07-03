@@ -47,20 +47,33 @@ export class ClimaComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  sanitizeCityName(name: string): string {
+    // Remove caracteres não alfabéticos e espaços extras
+    return name.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '').trim();
+  }
+
   obterClima() {
     this.erro = '';
     this.clima = null;
     this.carregando = true;
 
+    // Sanitização e validação da entrada
+    const cidadeSanitizada = this.sanitizeCityName(this.cidade);
+    if (!cidadeSanitizada || cidadeSanitizada.length < 2) {
+      this.erro = 'Nome de cidade inválido.';
+      this.carregando = false;
+      return;
+    }
+
     // Verifica se já existe no cache
-    const cacheClima = this.cache.get(this.cidade);
+    const cacheClima = this.cache.get(cidadeSanitizada);
     if (cacheClima) {
       this.clima = cacheClima;
       this.carregando = false;
       return;
     }
 
-    this.http.get(`https://geocoding-api.open-meteo.com/v1/search?name=${this.cidade}&count=1`)
+    this.http.get(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cidadeSanitizada)}&count=1`)
       .subscribe((geo: any) => {
         if (geo.results && geo.results.length > 0) {
           const { latitude, longitude } = geo.results[0];
@@ -68,13 +81,13 @@ export class ClimaComponent implements OnInit {
           this.http.get(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`)
             .subscribe((dados: any) => {
               this.clima = {
-                nomeCidade: this.cidade,
+                nomeCidade: cidadeSanitizada,
                 temperatura: dados.current_weather.temperature,
                 vento: dados.current_weather.windspeed,
                 maxima: dados.daily.temperature_2m_max[0],
                 minima: dados.daily.temperature_2m_min[0]
               };
-              this.cache.set(this.cidade, this.clima); // Salva no cache
+              this.cache.set(cidadeSanitizada, this.clima); // Salva no cache
               this.carregando = false;
             }, () => {
               this.erro = 'Erro ao obter clima.';
